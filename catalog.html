@@ -1,1 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
 
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>Catalogue</title>
+
+<link rel="stylesheet" href="styles.css">
+
+</head>
+
+<body>
+
+<header>
+
+<h1 id="catalogTitle">
+Loading...
+</h1>
+
+<p id="subtitle">
+0 items in your home inventory
+</p>
+
+<div class="header-buttons">
+
+<button id="publicToggle">
+Public
+</button>
+
+<button id="inventoryToggle">
+Inventory
+</button>
+
+<button id="addItemBtn">
+Add Item
+</button>
+
+<button id="logoutBtn">
+Logout
+</button>
+
+</div>
+
+</header>
+
+<section class="toolbar">
+
+<input
+id="searchInput"
+placeholder="Search">
+
+<select id="sortMode">
+
+<option value="alphabetical">
+Alphabetical
+</option>
+
+<option value="created">
+Date Added
+</option>
+
+</select>
+
+<select id="gridSize">
+
+<option value="xs">XS</option>
+<option value="small">Small</option>
+<option value="medium">Medium</option>
+<option value="large">Large</option>
+
+</select>
+
+<label>
+
+<input
+type="checkbox"
+id="photoFirst">
+
+Photos First
+
+</label>
+
+</section>
+
+<div id="searchPills"></div>
+
+<div id="itemGrid"></div>
+
+</body>
+
+<script src="app.js"></script>
+
+</html>
