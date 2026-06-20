@@ -1,1 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
+<title>Inventory Catalogue</title>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<div class="login-layout">
+
+    <div class="login-panel">
+
+        <h1>Inventory Catalogue</h1>
+
+        <input
+            id="username"
+            placeholder="Username">
+
+        <input
+            id="password"
+            type="password"
+            placeholder="Password">
+
+        <button id="loginBtn">
+            Login
+        </button>
+
+        <button id="registerBtn">
+            Register
+        </button>
+
+    </div>
+
+    <div class="public-panel">
+
+        <h2>Public Catalogues</h2>
+
+        <div id="catalogList">
+            Loading...
+        </div>
+
+    </div>
+
+</div>
+
+<script src="auth.js"></script>
+
+</body>
+</html>
