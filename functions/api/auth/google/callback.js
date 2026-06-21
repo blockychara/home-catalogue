@@ -6,8 +6,8 @@ export async function onRequestGet({ request, env }){
   const code = url.searchParams.get('code');
   if (!code) return jsonResponse({ error: 'no_code' }, { status: 400 });
   // exchange code for tokens
-  const redirectUri = new URL(request.url);
-  redirectUri.pathname = '/.netlify/functions/api/auth/google/callback';
+  const origin = new URL(request.url).origin;
+  const redirectUri = `${origin}/api/auth/google/callback`;
   const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -15,7 +15,7 @@ export async function onRequestGet({ request, env }){
       code,
       client_id: env.GOOGLE_CLIENT_ID,
       client_secret: env.GOOGLE_CLIENT_SECRET,
-      redirect_uri: redirectUri.toString(),
+      redirect_uri: redirectUri,
       grant_type: 'authorization_code'
     })
   });
@@ -25,7 +25,7 @@ export async function onRequestGet({ request, env }){
   const parts = tokenJson.id_token.split('.');
   const payload = JSON.parse(atob(parts[1]));
   const email = payload.email;
-  const username = email.split('@')[0];
+  const username = email ? email.split('@')[0] : `user_${Date.now()}`;
   // find or create user
   let user = await env.DB.prepare('SELECT id, username FROM users WHERE username = ?').bind(username).first();
   if (!user){

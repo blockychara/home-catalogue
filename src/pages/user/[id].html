@@ -28,14 +28,14 @@ async function load(){
   const parts = path.split('/').filter(Boolean);
   const userId = parts[1];
   if(!userId) { document.getElementById('items').innerText='Invalid user'; return; }
-  const res = await fetch(`/.netlify/functions/api/items?user_id=${userId}&public=1`);
+  const res = await fetch(`/api/items?user_id=${userId}&public=1`);
   const j = await res.json();
   const container = document.getElementById('items'); container.innerHTML='';
   if(!j.ok) { container.innerText = 'Private or no items'; return; }
   for(const it of j.items){
     const el = document.createElement('div'); el.className='card';
     const photo = it.photos ? (JSON.parse(it.photos)[0] || '') : '';
-    const imgHtml = photo ? `<img src='/.netlify/functions/api/images/${encodeURIComponent(photo)}' loading='lazy' />` : '';
+    const imgHtml = photo ? `<img src='/api/images/${encodeURIComponent(photo)}' loading='lazy' />` : '';
     el.innerHTML = `${imgHtml}<h4>${it.name}</h4><div style="color:#666">${it.details || ''}</div>`;
     container.appendChild(el);
   }

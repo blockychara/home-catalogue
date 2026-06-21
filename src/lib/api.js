@@ -1,5 +1,5 @@
-// Minimal client helper for API calls. Not used heavily in static pages above but included for future UI code.
+// Minimal client helper for API calls.
 export async function api(path, opts){
-  const res = await fetch('/.netlify/functions' + path, { credentials: 'include', headers: { 'Content-Type':'application/json' }, ...opts });
+  const res = await fetch('/api' + path, { credentials: 'include', headers: { 'Content-Type':'application/json' }, ...opts });
   return res.json();
 }
