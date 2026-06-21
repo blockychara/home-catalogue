@@ -79,3 +79,47 @@ button{
 .public-panel{
     padding:30px;
 }
+
+.theme-bar{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin:15px;
+}
+
+.theme-pill{
+    cursor:pointer;
+    padding:8px 12px;
+    border-radius:999px;
+    border:1px solid #ccc;
+}
+
+.lightbox{
+    display:none;
+
+    position:fixed;
+
+    inset:0;
+
+    background:
+    rgba(0,0,0,.8);
+
+    z-index:9999;
+}
+
+.lightbox.show{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.lightbox img{
+    max-width:95vw;
+    max-height:95vh;
+}
+
+#closeLightbox{
+    position:absolute;
+    top:20px;
+    right:20px;
+}
