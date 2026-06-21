@@ -1,0 +1,10 @@
+name: home-catalogue
+main: ./functions
+
+# This file is an opinionated starter for Pages Functions local config (wrangler compatible)
+
+[env.production]
+# Bindings are configured via the Pages dashboard in production. Example names used in code:
+# - DB (D1)
+# - R2_IMAGES (R2)
+

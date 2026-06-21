@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Home Catalogue</title>
+  <style>
+    body{font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial;margin:0;padding:20px}
+    header{display:flex;justify-content:space-between;align-items:center}
+    .list{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:16px}
+    .card{padding:12px;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.06)}
+    img{max-width:100%;height:120px;object-fit:cover;border-radius:6px}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Home Catalogue</h1>
+    <div>
+      <a href="/login.html">Login / Register</a>
+    </div>
+  </header>
+  <section>
+    <h3>Public catalogues</h3>
+    <div id="public-list" class="list"></div>
+  </section>
+<script>
+async function fetchPublic(){
+  const res = await fetch('/.netlify/functions/api/public-catalogues');
+  const j = await res.json();
+  const container = document.getElementById('public-list'); container.innerHTML='';
+  if (!j.ok) { container.innerText = 'No public catalogues'; return; }
+  for(const u of j.users){
+    const el = document.createElement('div'); el.className='card';
+    el.innerHTML = `<strong>${u.username}</strong><div style="margin-top:8px"><a href="/user/${u.id}">View</a></div>`;
+    container.appendChild(el);
+  }
+}
+fetchPublic();
+</script>
+</body>
+</html>

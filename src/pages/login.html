@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Home Catalogue — Login</title>
+  <style>
+    body{font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial;display:flex;align-items:center;justify-content:center;height:100vh;margin:0}
+    .card{width:360px;padding:20px;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,0.08)}
+    input,button{width:100%;padding:10px;margin-top:8px}
+    .row{display:flex;gap:8px}
+    .oauth{display:flex;gap:8px;margin-top:8px}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Home Catalogue</h2>
+    <div id="status"></div>
+    <input id="username" placeholder="username" />
+    <input id="password" type="password" placeholder="password" />
+    <input id="hint" placeholder="password hint (optional)" />
+    <div class="row">
+      <button id="register">Register</button>
+      <button id="login">Login</button>
+    </div>
+    <div class="oauth">
+      <button id="google">Sign in with Google</button>
+    </div>
+    <p style="margin-top:12px;font-size:13px">Public catalogues are available on the main page.</p>
+  </div>
+<script>
+const api = (path, options={}) => fetch('/.netlify/functions' + path, { credentials: 'include', headers: { 'Content-Type':'application/json' }, ...options });
+
+documen	.getElementById('register').addEventListener('click', async ()=>{
+  const u=document.getElementById('username').value.trim();
+  const p=document.getElementById('password').value; const h=document.getElementById('hint').value;
+  const res=await api('/api/auth/register',{method:'POST',body:JSON.stringify({username:u,password:p,hint:h})});
+  const j=await res.json(); document.getElementById('status').innerText=JSON.stringify(j);
+  if (j.ok) window.location.href = '/';
+});
+
+document.getElementById('login').addEventListener('click', async ()=>{
+  const u=document.getElementById('username').value.trim();
+  const p=document.getElementById('password').value;
+  const res=await api('/api/auth/login',{method:'POST',body:JSON.stringify({username:u,password:p})});
+  const j=await res.json(); document.getElementById('status').innerText=JSON.stringify(j);
+  if (j.ok) window.location.href = '/';
+});
+
+document.getElementById('google').addEventListener('click', ()=>{
+  window.location.href = '/.netlify/functions/api/auth/google';
+});
+</script>
+</body>
+</html>
