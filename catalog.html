@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 
-<title>Catalogue</title>
+<title>Inventory Catalogue</title>
 
 <link rel="stylesheet" href="styles.css">
 
@@ -13,83 +13,328 @@
 
 <body>
 
-<header>
+<div id="lightbox" class="lightbox">
 
-<h1 id="catalogTitle">
-Loading...
-</h1>
+    <button id="closeLightbox">
+        ✕
+    </button>
 
-<p id="subtitle">
-0 items in your home inventory
-</p>
-
-<div class="header-buttons">
-
-<button id="publicToggle">
-Public
-</button>
-
-<button id="inventoryToggle">
-Inventory
-</button>
-
-<button id="addItemBtn">
-Add Item
-</button>
-
-<button id="logoutBtn">
-Logout
-</button>
+    <img id="lightboxImage">
 
 </div>
+
+<header>
+
+    <div class="header-top">
+
+        <div>
+
+            <h1 id="catalogTitle">
+                Loading...
+            </h1>
+
+            <p id="subtitle">
+
+                <span id="itemCount">
+                    0
+                </span>
+
+                items in your home
+
+                <span
+                    id="inventoryWord"
+                    class="secret-word">
+
+                    inventory
+
+                </span>
+
+            </p>
+
+        </div>
+
+        <div class="header-buttons">
+
+            <button
+                id="hiddenToggle"
+                class="hidden-toggle">
+            </button>
+
+            <button
+                id="publicToggle">
+                Public
+            </button>
+
+            <button
+                id="manageBtn">
+                Manage
+            </button>
+
+            <button
+                id="addItemBtn">
+                Add Item
+            </button>
+
+            <button
+                id="logoutBtn">
+                Logout
+            </button>
+
+        </div>
+
+    </div>
 
 </header>
 
 <section class="toolbar">
 
-<input
-id="searchInput"
-placeholder="Search">
+    <div class="toolbar-row">
 
-<select id="sortMode">
+        <input
+            id="searchInput"
+            placeholder="Search">
 
-<option value="alphabetical">
-Alphabetical
-</option>
+        <select id="sortMode">
 
-<option value="created">
-Date Added
-</option>
+            <option value="alphabetical">
+                Alphabetical
+            </option>
 
-</select>
+            <option value="created">
+                Date Added
+            </option>
 
-<select id="gridSize">
+        </select>
 
-<option value="xs">XS</option>
-<option value="small">Small</option>
-<option value="medium">Medium</option>
-<option value="large">Large</option>
+        <select id="gridSize">
 
-</select>
+            <option value="xs">
+                XS
+            </option>
 
-<label>
+            <option value="small">
+                Small
+            </option>
 
-<input
-type="checkbox"
-id="photoFirst">
+            <option value="medium" selected>
+                Medium
+            </option>
 
-Photos First
+            <option value="large">
+                Large
+            </option>
 
-</label>
+        </select>
+
+    </div>
+
+    <div class="toolbar-row">
+
+        <label>
+
+            <input
+                type="checkbox"
+                id="showPhotos"
+                checked>
+
+            Photos
+
+        </label>
+
+        <label>
+
+            <input
+                type="checkbox"
+                id="showDetails"
+                checked>
+
+            Details
+
+        </label>
+
+        <label>
+
+            <input
+                type="checkbox"
+                id="photoFirst">
+
+            Photos First
+
+        </label>
+
+    </div>
 
 </section>
 
+<div id="themeBar" class="theme-bar">
+
+    <button
+        class="theme-pill"
+        data-theme="warm">
+
+        Warm
+
+    </button>
+
+    <button
+        class="theme-pill"
+        data-theme="slate">
+
+        Slate
+
+    </button>
+
+    <button
+        class="theme-pill"
+        data-theme="forest">
+
+        Forest
+
+    </button>
+
+    <button
+        class="theme-pill"
+        data-theme="rose">
+
+        Rose
+
+    </button>
+
+    <button
+        class="theme-pill"
+        data-theme="dark">
+
+        Dark
+
+    </button>
+
+    <button
+        class="theme-pill"
+        data-theme="sand">
+
+        Sand
+
+    </button>
+
+</div>
+
 <div id="searchPills"></div>
 
-<div id="itemGrid"></div>
+<main>
+
+    <div id="itemGrid">
+
+    </div>
+
+</main>
+
+<!-- ITEM MODAL -->
+
+<div
+    id="itemModal"
+    class="modal">
+
+    <div class="modal-content">
+
+        <h2 id="itemModalTitle">
+            Add Item
+        </h2>
+
+        <input
+            id="itemName"
+            placeholder="Item Name">
+
+        <select
+            id="itemType">
+        </select>
+
+        <select
+            id="itemLocation">
+        </select>
+
+        <textarea
+            id="itemDetails"
+            placeholder="Details">
+        </textarea>
+
+        <input
+            type="file"
+            id="itemImage">
+
+        <label>
+
+            <input
+                type="checkbox"
+                id="itemHidden">
+
+            Hidden
+
+        </label>
+
+        <label>
+
+            <input
+                type="checkbox"
+                id="itemInUse">
+
+            In Use
+
+        </label>
+
+        <input
+            id="tempLocation"
+            placeholder="Temporary Location">
+
+        <div class="modal-buttons">
+
+            <button
+                id="saveItemBtn">
+                Save
+            </button>
+
+            <button
+                id="cancelItemBtn">
+                Cancel
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- MANAGE MODAL -->
+
+<div
+    id="manageModal"
+    class="modal">
+
+    <div class="modal-content manage-content">
+
+        <h2>
+            Manage
+        </h2>
+
+        <div
+            id="typesSection">
+        </div>
+
+        <div
+            id="locationsSection">
+        </div>
+
+        <button
+            id="closeManageBtn">
+
+            Close
+
+        </button>
+
+    </div>
+
+</div>
+
+<script type="module" src="app.js"></script>
 
 </body>
-
-<script src="app.js"></script>
-
 </html>
