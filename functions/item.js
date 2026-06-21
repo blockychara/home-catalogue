@@ -1,86 +1,184 @@
-import {
-    getUser
-}
-from "./session";
+import { getUser } from "./session";
 
-export async function onRequestPost(
-    context
-){
+export async function onRequest(context) {
 
-    const user =
-        await getUser(
-            context.request,
-            context.env
-        );
+    const { request, env } = context;
 
-    if(!user){
+    const user = await getUser(
+        request,
+        env
+    );
 
+    if (!user) {
         return Response.json(
-            {
-                error:"Unauthorized"
-            },
-            {
-                status:401
-            }
+            { error: "Unauthorized" },
+            { status: 401 }
         );
-
     }
 
-    const body =
-        await context.request.json();
+    const method = request.method;
 
-    await context.env.DB
-        .prepare(`
-            INSERT INTO items(
+    // ---------------------
+    // GET SINGLE ITEM
+    // ---------------------
 
-                user_id,
+    if (method === "GET") {
 
-                name,
+        const url =
+            new URL(request.url);
 
-                type,
+        const id =
+            url.searchParams.get("id");
 
-                location,
+        const item =
+            await env.DB
+                .prepare(`
+                    SELECT *
+                    FROM items
+                    WHERE id=?
+                    AND user_id=?
+                `)
+                .bind(
+                    id,
+                    user.id
+                )
+                .first();
 
-                details,
+        if (!item) {
+            return Response.json(
+                { error: "Not found" },
+                { status: 404 }
+            );
+        }
 
-                image_key,
+        return Response.json(item);
+    }
 
-                hidden,
+    // ---------------------
+    // CREATE
+    // ---------------------
 
-                in_use,
+    if (method === "POST") {
 
-                temporary_location
+        const body =
+            await request.json();
+
+        const result =
+            await env.DB
+                .prepare(`
+                    INSERT INTO items(
+                        user_id,
+                        name,
+                        type,
+                        location,
+                        details,
+                        image_key,
+                        hidden,
+                        in_use,
+                        temporary_location
+                    )
+                    VALUES(
+                        ?,?,?,?,?,?,?,?,?
+                    )
+                `)
+                .bind(
+                    user.id,
+                    body.name || "",
+                    body.type || "",
+                    body.location || "",
+                    body.details || "",
+                    body.image_key || "",
+                    body.hidden ? 1 : 0,
+                    body.in_use ? 1 : 0,
+                    body.temporary_location || ""
+                )
+                .run();
+
+        return Response.json({
+            success: true,
+            id: result.meta.last_row_id
+        });
+    }
+
+    // ---------------------
+    // UPDATE
+    // ---------------------
+
+    if (method === "PUT") {
+
+        const body =
+            await request.json();
+
+        await env.DB
+            .prepare(`
+                UPDATE items
+                SET
+
+                name=?,
+                type=?,
+                location=?,
+                details=?,
+                image_key=?,
+                hidden=?,
+                in_use=?,
+                temporary_location=?
+
+                WHERE id=?
+                AND user_id=?
+            `)
+            .bind(
+
+                body.name,
+                body.type,
+                body.location,
+                body.details,
+                body.image_key,
+                body.hidden ? 1 : 0,
+                body.in_use ? 1 : 0,
+                body.temporary_location,
+
+                body.id,
+                user.id
 
             )
-            VALUES(
-                ?,?,?,?,?,?,?,?,?
+            .run();
+
+        return Response.json({
+            success: true
+        });
+    }
+
+    // ---------------------
+    // DELETE
+    // ---------------------
+
+    if (method === "DELETE") {
+
+        const url =
+            new URL(request.url);
+
+        const id =
+            url.searchParams.get("id");
+
+        await env.DB
+            .prepare(`
+                DELETE FROM items
+                WHERE id=?
+                AND user_id=?
+            `)
+            .bind(
+                id,
+                user.id
             )
-        `)
-        .bind(
+            .run();
 
-            user.id,
+        return Response.json({
+            success: true
+        });
+    }
 
-            body.name,
-
-            body.type,
-
-            body.location,
-
-            body.details,
-
-            body.image_key,
-
-            body.hidden ? 1 : 0,
-
-            body.in_use ? 1 : 0,
-
-            body.temporary_location
-
-        )
-        .run();
-
-    return Response.json({
-        success:true
-    });
-
+    return Response.json(
+        { error: "Method not allowed" },
+        { status: 405 }
+    );
 }
