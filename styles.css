@@ -123,3 +123,70 @@ button{
     top:20px;
     right:20px;
 }
+
+.modal-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:
+    rgba(0,0,0,.5);
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:5000;
+
+}
+
+.modal{
+
+    background:white;
+
+    padding:20px;
+
+    border-radius:12px;
+
+    width:500px;
+
+    max-width:95vw;
+
+}
+
+.modal.large{
+
+    width:900px;
+
+}
+
+.modal input,
+.modal select,
+.modal textarea{
+
+    width:100%;
+
+    margin-bottom:10px;
+
+}
+
+.modal-buttons{
+
+    display:flex;
+
+    gap:10px;
+
+}
+
+.manage-row{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    padding:8px;
+
+}
